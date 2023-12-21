@@ -2,8 +2,6 @@
 
 html,
 body {
-  height: 100%;
-  min-height: 100%;
   margin: 0;
   box-sizing: border-box;
   --brand-green: #4fe3a3;
@@ -29,7 +27,14 @@ body {
 
 .container {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  gap: 40px;
+}
+
+@media (min-width: 1000px) {
+  .container {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0px;
+  }
 }
 
 .test-header {
@@ -73,7 +78,6 @@ button:focus {
 
 button:active {
   background-color:green;
-  /* border-radius: 4px; */
   border: none;
 }
 
@@ -83,16 +87,41 @@ button:active {
 
 .video-container {
   display: grid;
-  grid-template-rows: repeat(2, 1fr);
+  position: relative;
+  height: 100%;
+}
+
+.video-text-container{
+  height: 100%;
+  margin: 40px;
+  color: var(--white)
+}
+
+.titleDescription{
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+#videoTitle{
+  font-size: 25px;
 }
 
 .video {
-  grid-area: 1/1/1/1;
+  display: flex;
+  justify-content: center;
+  width: 100%;
 }
 
 video {
   border: 2px solid var(--brand-green);
+  width: 100%;
 }
+
+video::-webkit-media-controls-panel {
+  display: none !important;
+  opacity: 1 !important;}
 
 video:focus {
   outline: none;
@@ -101,10 +130,12 @@ video:focus {
 .control-bar{
   display: inline-flex;
   align-items: center;
-  grid-template-columns: repeat(12, 1fr);
+  justify-content: center;
   height: 50px;
-  width: 500px;
   margin-top: 20px;
+  position: absolute;
+  bottom: 45px;
+  width: 100%;
 }
 
 .control-bar-item {
@@ -172,8 +203,8 @@ video:focus {
   transform: scaleX(-1);
 }
 
-.volume {
-  display: none;
+.hide {
+  display: none !important;
 }
 
 label {
@@ -187,12 +218,147 @@ footer {
   width: 100%;
   border-top: 1px solid var(--light-gray);
   position: fixed;
+  bottom: 0px;
+  background-color: var(--background-color);
 }
 
 .footer-contents {
   margin: auto;
   width: 30%;
-  padding-left: 100px;
+  text-align: center;
   padding-bottom: 25px;
   color: var(--white);
+}
+
+.videoListContainer {
+  display: flex;
+  flex-direction: column;
+  width: 400px;
+  height: 100%;
+  max-height: 800px;
+  margin: auto;
+  border: 1px solid var(--white);
+  color: var(--white);
+}
+
+.videoListTitle{
+  border-bottom: 1px solid var(--white);
+  text-align: center;
+  padding: 20px;
+}
+
+.videoList{
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  height: 100%;
+  overflow-y: scroll;
+}
+
+.card{
+  display: flex;
+  padding-left: 20px;
+  padding-right: 20px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  position: relative;
+}
+
+.card img{
+  height: 100px;
+  width: 175px;
+}
+
+.text-container{
+  margin-left: 20px;
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+  justify-content: center;
+  width: 100%;
+}
+
+.errorMessage{
+  color: var(--ds-theme-error);
+  padding: 30px;
+}
+
+.static {
+  position:absolute;
+}
+
+.static:hover {
+  opacity:0;
+}
+
+.directions{
+  opacity: 1;
+  border: 2px solid var(--brand-green);
+  width: 100%;
+  color: var(--white);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+}
+
+@media (max-width: 999px){
+  .directions{
+    height: 300px;
+  }
+  .video-container{
+    margin: 20px;
+  }
+  .container{
+    margin-bottom: 80px;
+  }
+}
+
+
+.loading-block {
+  background: linear-gradient(to right, #7a7a7a, #bcbcbc, #7a7a7a);
+  background: -webkit-linear-gradient(to right, #7a7a7a, #bcbcbc, #7a7a7a);
+  background-size: 200%;
+  height: 30px;
+  width: 200px;
+  animation: loading-gradient 1.5s linear infinite;
+}
+
+.loading-image{
+  height: 100px;
+  width: 175px;
+}
+
+.loading-text{
+  width: 100%;
+  margin: 2px 0px;
+  height: 20px;
+}
+
+@keyframes loading-gradient {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: -100% 50%;
+  }
+  100% {
+    background-position: -200% 50%;
+  }
+}
+
+.videoListLoading{
+  overflow: none;
+}
+
+.popup {
+  visibility: hidden;
+  opacity: 0;
+  transition: opacity 250ms ease-in, visibility 0ms ease-in 250ms;
+}
+
+.popup.show {
+  visibility: visible;
+  opacity: 1;
+  transition: opacity 250ms ease-in, visibility 0ms ease-in 0ms;
 }

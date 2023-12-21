@@ -1,5 +1,5 @@
-import express from 'express';
-import { root } from '../utils/index.js';
+import express from "express";
+import { root } from "../utils/index.js";
 
 const router = express.Router();
 
@@ -8,8 +8,8 @@ const router = express.Router();
  * @description Serve the index.html file.
  * @access Public
  */
-router.get('/', (req, res) => {
-  res.sendFile('public/index.html' , { root });
+router.get("/", (req, res) => {
+  res.sendFile("public/index.html" , { root });
 });
 
 export {router as indexRouter};

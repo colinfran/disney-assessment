@@ -29,7 +29,6 @@ var dataArr = [];
 // eslint-disable-next-line no-unused-vars
 const itemClick = async (index) => {
   const {title, description = "test", fileId} = dataArr[index];
-  console.log(title, description, fileId);
   videoTitle.innerHTML = title;
   videoDescription.innerHTML = description;
   videoPlayer.src = `/video/${fileId}`;

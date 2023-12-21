@@ -21,7 +21,7 @@ router.get("/:id", async (req, res) => {
   }
   const url = `https://disney-assessment.s3.us-west-1.amazonaws.com/mp4/${id}.mp4`;
   try {
-    got.stream(url).pipe(res);
+    await got.stream(url).pipe(res);
   } catch (error) {
     console.log(error);
   }

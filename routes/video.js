@@ -20,11 +20,11 @@ router.get("/:id", async (req, res) => {
     res.status(400).send("Requires video id");
   }
   const url = `https://disney-assessment.s3.us-west-1.amazonaws.com/mp4/${id}.mp4`;
-  try {
-    await got.stream(url).pipe(res);
-  } catch (error) {
-    console.log(error);
-  }
+  const stream = got.stream(url);
+  stream.on("error", (error) => {
+    console.error(error.message);
+  });
+  stream.pipe(res);
 });
 
 export {router as videoRouter};

@@ -1,6 +1,6 @@
 import express from "express";
 import cors from "cors";
-import { root } from "./utils/index.js";
+import { downloadVideos, root } from "./utils/index.js";
 import { indexRouter } from "./routes/index.js";
 import { videoRouter } from "./routes/video.js";
 import { streamsRouter } from "./routes/streams.js";
@@ -18,6 +18,12 @@ app.use("/video", videoRouter);
 app.use("/streams", streamsRouter);
 
 /* Start */
-app.listen(3000, () =>
-  console.log("Disney assessment app listening on port 3000!"),
-);
+const startup = async () => {
+  // download all videos on startup
+  // we want to be able to split up video in 1mb chunks for faster loading for user
+  await downloadVideos();
+  app.listen(3000, () =>
+    console.log("Disney assessment app listening on port 3000!"),
+  );
+};
+startup();

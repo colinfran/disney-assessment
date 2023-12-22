@@ -11,20 +11,23 @@ const router = Router();
  * @access Public
  */
 router.get("/:id", async (req, res) => {
-  const range = req.headers.range;
-  const id = req.params.id;
-  if (!range) {
-    res.status(400).send("Requires range header");
-  }
-  if (id === undefined) {
-    res.status(400).send("Requires video id");
-  }
-  const url = `https://disney-assessment.s3.us-west-1.amazonaws.com/mp4/${id}.mp4`;
-  const stream = got.stream(url);
-  stream.on("error", (error) => {
+  try {
+    const range = req.headers.range;
+    const id = req.params.id;
+    if (!range || id === undefined) {
+      return res.status(400).send("Invalid request parameters");
+    }
+    const url = `https://disney-assessment.s3.us-west-1.amazonaws.com/mp4/${id}.mp4`;
+    const stream = got.stream(url);
+    stream.on("error", (error) => {
+      console.error(error.message);
+      res.status(500).send("Internal Server Error");
+    });
+    stream.pipe(res);
+  } catch (error) {
     console.error(error.message);
-  });
-  stream.pipe(res);
+    res.status(500).send("Internal Server Error");
+  }
 });
 
 export {router as videoRouter};

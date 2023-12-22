@@ -34,6 +34,7 @@ body {
   .container {
     grid-template-columns: repeat(2, 1fr);
     gap: 0px;
+    margin-bottom: 200px;
   }
 }
 

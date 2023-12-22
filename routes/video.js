@@ -18,9 +18,15 @@ router.get("/:id", async (req, res) => {
   }
   const videoPath = `${root}/videos/${id}.mp4`;
   const videoSize = fs.statSync(videoPath).size;
-  const CHUNK_SIZE = 10 ** 6;
-  const start = Number(range.replace(/\D/g, ""));
-  const end = Math.min(start + CHUNK_SIZE, videoSize - 1);
+  // Safari range header has both start and end
+  let parts = range.split("=")[1];
+  let start = Number(parts.split("-")[0]);
+  let end = Number(parts.split("-")[1]);
+  // Chrome range header only has just start; set end to be start + 1mb
+  if (!end) {
+    const CHUNK_SIZE = 10 ** 6;
+    end = Math.min(start + CHUNK_SIZE, videoSize - 1);
+  } 
   const contentLength = end - start + 1;
   const headers = {
     "Content-Range": `bytes ${start}-${end}/${videoSize}`,

@@ -5,7 +5,7 @@ const router = Router();
 
 /**
  * @route GET /video/:id
- * @description Stream a video by ID from S3 external source.
+ * @description Stream a video by ID in 1mb chunks.
  * @param {string} id - The unique identifier of the video.
  * @header {string} range - The range header specifying the byte range for partial content.
  * @access Public

@@ -32,6 +32,7 @@ const itemClick = async (index) => {
   videoTitle.innerHTML = title;
   videoDescription.innerHTML = description;
   videoPlayer.src = `/video/${fileId}`;
+  videoPlayer.load();
   videoPlayer.play();
   // if directions are still on screen, remove them
   if (directions.className === "directions"){

@@ -311,6 +311,35 @@ footer {
   }
   .container{
     margin-bottom: 80px;
+    display: flex;
+    flex-direction: column;
+  }
+  .videoListContainer{
+    width: 100%;
+    max-height: max-content;
+  }
+  .videoList{
+    width: 100%;
+  }
+  .videoListWrapper{
+    padding: 40px;
+  }
+  .card img {
+    height: 200px;
+    width: 350px;
+  }
+  body{
+    font-size: 30px;
+  }
+  #videoTitle{
+    font-size: 50px;
+  }
+  .loading-image{
+    height: 200px !important;
+    width: 350px !important;
+  }
+  .loading-text{
+    height: 40px !important;;
   }
 }
 

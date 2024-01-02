@@ -6,6 +6,9 @@ dotenv.config();
 
 const root = process.env.PWD;
 
+const accessKeyId = process.env.AWS_ACCESS_KEY;
+const secretAccessKey = process.env.AWS_SECRET;
+
 const client = new MongoClient(process.env.MONGO_URI, {
   serverApi: {
     version: ServerApiVersion.v1,
@@ -42,4 +45,4 @@ const downloadVideos = async () => {
   }
 };
 
-export { root, client, downloadVideos };
+export { root, client, downloadVideos, accessKeyId, secretAccessKey };

@@ -1,7 +1,13 @@
 import { Router } from "express";
-import fs from "fs";
-import { root } from "../utils/index.js";
+import AWS from "aws-sdk";
+import { accessKeyId, secretAccessKey } from "../utils/index.js";
 const router = Router();
+
+const s3bucket = new AWS.S3({
+  accessKeyId,
+  secretAccessKey,
+  region: "us-west-1",
+});
 
 /**
  * @route GET /video/:id
@@ -16,27 +22,21 @@ router.get("/:id", async (req, res) => {
   if (!range || id === undefined) {
     return res.status(400).send("Invalid request parameters");
   }
-  const videoPath = `${root}/videos/${id}.mp4`;
-  const videoSize = fs.statSync(videoPath).size;
-  // Safari range header has both start and end
-  let parts = range.split("=")[1];
-  let start = Number(parts.split("-")[0]);
-  let end = Number(parts.split("-")[1]);
-  // Chrome range header only has just start; set end to be start + 1mb
-  if (!end) {
-    const CHUNK_SIZE = 10 ** 6;
-    end = Math.min(start + CHUNK_SIZE, videoSize - 1);
-  } 
-  const contentLength = end - start + 1;
-  const headers = {
-    "Content-Range": `bytes ${start}-${end}/${videoSize}`,
-    "Accept-Ranges": "bytes",
-    "Content-Length": contentLength,
-    "Content-Type": "video/mp4",
-  };
-  res.writeHead(206, headers);
-  const videoStream = fs.createReadStream(videoPath, { start, end });
-  videoStream.pipe(res);
+  s3bucket.getObject({
+    Bucket: "disney-assessment",
+    Key: `mp4/${id}.mp4`,
+    Range: range
+  }, (err, data) => {
+    if(err){
+      return console.log(err);
+    }
+    res.status(206);
+    res.setHeader("Content-Range", data.ContentRange);
+    res.setHeader("Accept-Ranges", "bytes");
+    res.setHeader("Content-Length", data.ContentLength);
+    res.setHeader("Content-Type", "video/mp4");
+    res.send(data.Body);
+  });
 });
 
 export {router as videoRouter};

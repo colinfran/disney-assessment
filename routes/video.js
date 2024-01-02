@@ -37,6 +37,14 @@ router.get("/:id", async (req, res) => {
   res.writeHead(206, headers);
   const videoStream = fs.createReadStream(videoPath, { start, end });
   videoStream.pipe(res);
+  videoStream.on("error", (err) => {
+    console.log("Error in read stream...");
+    console.log(err);
+  });
+  res.on("error", (err) => {
+    console.log("Error in write stream...");
+    console.log(err);
+  });
 });
 
 export {router as videoRouter};

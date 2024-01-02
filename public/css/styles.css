@@ -278,12 +278,16 @@ footer {
   text-align: left;
   justify-content: center;
   width: 100%;
+}
+
+.text-container:active{
   pointer-events: none;
 }
 
-.image-container{
+.image-container:active{
   pointer-events: none;
 }
+
 
 .errorMessage{
   color: var(--ds-theme-error);

@@ -26,33 +26,13 @@ var dataArr = [];
 /* 
     On window load, fetch the data and render the list of videos
 */
-// eslint-disable-next-line no-unused-vars
-const itemClick = async (index) => {
-  const {title, description = "test", fileId} = dataArr[index];
-  videoTitle.innerHTML = title;
-  videoDescription.innerHTML = description;
-  videoPlayer.src = `/video/${fileId}`;
-  videoPlayer.load();
-  videoPlayer.play();
-  // if directions are still on screen, remove them
-  if (directions.className === "directions"){
-    directions.classList.toggle("hide");
-    videoPlayer.classList.toggle("hide");
-    controlBar.classList.toggle("hide");
-  }
-  // make sure to show pause button
-  if (pause.className === "hide"){
-    play.classList.toggle("hide");
-    pause.classList.toggle("hide");
-  }
-};
 
 const renderItems = (listItems) => {
   const url = "https://disney-assessment.s3.us-west-1.amazonaws.com";
   let itemsHtml = "";
   listItems.forEach((item, index) => {
     itemsHtml += (
-      `<div class="card" onclick="itemClick('${index}')">
+      `<div class="card" data-index="${index}">
         <div class="image-container">
           <img class="static" src="${`${url}/preview-image/${item.fileId}.jpg`}" alt="${item.title}" />
           <img src="${`${url}/preview-gif/${item.fileId}.gif`}" alt="${item.title}" />
@@ -83,6 +63,32 @@ window.onload = async () => {
   }
 };
 
+const onClick = async (e) => {
+  const index = e.target.getAttribute("data-index");
+  const {title, description, fileId} = dataArr[index];
+  videoTitle.innerHTML = title;
+  videoDescription.innerHTML = description;
+  videoPlayer.src = `/video/${fileId}`;
+  videoPlayer.load();
+  videoPlayer.play();
+  // if directions are still on screen, remove them
+  if (directions.className === "directions"){
+    directions.classList.toggle("hide");
+    videoPlayer.classList.toggle("hide");
+    controlBar.classList.toggle("hide");
+  }
+  // make sure to show pause button
+  if (pause.className === "hide"){
+    play.classList.toggle("hide");
+    pause.classList.toggle("hide");
+  }
+};
+// click listener for video list cards
+videoList.addEventListener("click", async (e) => {
+  if (e.target.hasAttribute("data-index")){
+    await onClick(e);
+  }
+});
 
 /* 
     Video Player Interaction
